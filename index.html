@@ -205,6 +205,10 @@
             font-size: 24px;
             animation: pulse 1.5s ease-in-out infinite;
         }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; pointer-events: none; }
+        }
         
         /* VERSIÓN DESKTOP */
         .desktop-container {
@@ -386,7 +390,7 @@
             let isAnimating = false;
 
             const carouselWrapper = document.getElementById('carouselWrapper');
-            const initialInstruction = document.querySelector('.initial-instruction');
+         //   const initialInstruction = document.querySelector('.initial-instruction');
 
             // Cambiar slide con dirección
             function goToSlide(index, direction = 'right') {
@@ -433,6 +437,7 @@
 
             // Full screen al hacer tap
             function requestFullScreen() {
+                initialInstruction.style.display = 'none';
                 const element = carouselWrapper;
                 if (element.requestFullscreen) {
                     element.requestFullscreen().catch(() => {
