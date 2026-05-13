@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Oscar Solar : 12 May 26" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://picoscar.github.io/oscarsolar_12may26" />
+    <meta property="og:image" content="https://picoscar.github.io/oscarsolar_12may26/03.jpg" />
+    <meta property="og:description" content="Retrato, El Socorro, Santander" />
+    <title>Oscar Solar - 12 May 26</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* VERSIÓN MÓVIL */
+        .mobile-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+        }
+
+        /* Animación: entrada desde la derecha */
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Animación: salida hacia la izquierda */
+        @keyframes slideOutToLeft {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Animación: entrada desde la izquierda */
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Animación: salida hacia la derecha */
+        @keyframes slideOutToRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            z-index: 10;
+            transform: translateX(0);
+        }
+
+        /* Entrada/Salida según dirección */
+        .carousel-slide.active.from-right {
+            animation: slideInFromRight 0.5s ease-out forwards;
+        }
+
+        .carousel-slide.active.from-left {
+            animation: slideInFromLeft 0.5s ease-out forwards;
+        }
+
+        .carousel-slide.exit-left {
+            animation: slideOutToLeft 0.5s ease-out forwards;
+            z-index: 9;
+        }
+
+        .carousel-slide.exit-right {
+            animation: slideOutToRight 0.5s ease-out forwards;
+            z-index: 9;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .slide-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+        }
+
+        /* Áreas de tap */
+        .tap-zone {
+            position: absolute;
+            height: 100%;
+            z-index: 15;
+            cursor: pointer;
+            -webkit-touch-action: manipulation;
+            touch-action: manipulation;
+        }
+
+        .tap-left {
+            left: 0;
+            width: 25%;
+        }
+
+        .tap-right {
+            right: 0;
+            width: 25%;
+        }
+        /* Instrucciones iniciales */
+        .initial-instruction {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 25;
+            text-align: center;
+            animation: fadeOut 2s ease-in forwards;
+            animation-delay: 0.5s;
+            pointer-events: none;
+        }
+
+        .instruction-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .instruction-icon {
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; pointer-events: none; }
+        }
+        
+        /* VERSIÓN DESKTOP */
+        .desktop-container {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .desktop-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .qr-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        #qrcode {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .desktop-message {
+            text-align: center;
+            color: white;
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mobile-container {
+                display: flex;
+            }
+
+            .desktop-container {
+                display: none !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-container {
+                display: none;
+            }
+
+            .desktop-container {
+                display: flex;
+            }
+        }
+
+        /* Prevenir rebote en iOS */
+        body {
+            overscroll-behavior: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        /* Full screen en navegadores */
+        .carousel-slide:fullscreen {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <!-- VERSIÓN MÓVIL -->
+    <div class="mobile-container">
+        <div class="carousel-wrapper" id="carouselWrapper">
+            <!-- Slide 1 -->
+            <div class="carousel-slide active from-right">
+                <img src="01.jpg" class="slide-image" alt="Foto 1">
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+                <img src="02.jpg" class="slide-image" alt="Foto 2">
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-slide">
+                <img src="03.jpg" class="slide-image" alt="Foto 3">
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="carousel-slide">
+                <img src="04.jpg" class="slide-image" alt="Foto 4">
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="carousel-slide">
+                <img src="05.jpg" class="slide-image" alt="Foto 5">
+            </div>
+            <!-- Instrucción inicial -->
+            <div class="initial-instruction">
+                <div class="instruction-icon">👆</div>
+                <div class="instruction-text">Toca en el centro para pantalla completa</div>
+            </div>
+            
+            <!-- Áreas de tap -->
+            <div class="tap-zone tap-left" id="tapLeft"></div>
+            <div class="tap-zone tap-right" id="tapRight"></div>
+        </div>
+    </div>
+
+    <!-- VERSIÓN DESKTOP -->
+    <div class="desktop-container">
+        <div class="desktop-content">
+            <div class="qr-container">
+                <div id="qrcode"></div>
+            </div>
+            <div class="desktop-message">Escanea para ver en tu celular</div>
+        </div>
+    </div>
+
+    <script>
+        // Detectar si es móvil
+        function isMobileDevice() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // Detectar por patrones de user agent
+            if (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase())) {
+                return true;
+            }
+            
+            // Detectar por pantalla táctil
+            if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+                return true;
+            }
+            
+            return false;
+        }
+
+        // Inicializar QR en desktop
+        if (!isMobileDevice()) {
+            const qrUrl = window.location.href;
+            new QRCode(document.getElementById('qrcode'), {
+                text: qrUrl,
+                width: 280,
+                height: 280,
+                correctLevel: QRCode.CorrectLevel.H,
+                colorDark: '#667eea',
+                colorLight: '#ffffff'
+            });
+        }
+
+        // LÓGICA DEL CARRUSEL (solo en móvil)
+        if (isMobileDevice()) {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.carousel-slide');
+            const totalSlides = slides.length;
+            let isFullScreen = false;
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let isAnimating = false;
+
+            const carouselWrapper = document.getElementById('carouselWrapper');
+            const initialInstruction = document.querySelector('.initial-instruction');
+
+            // ✅ FIX: Cambiar slide con dirección - CORRECCIÓN IMPORTANTE
+            function goToSlide(index, direction = 'right') {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                const previousSlide = currentSlide;
+                const previousElement = slides[previousSlide];
+                const newElement = slides[index];
+
+                // ✅ CORRECCIÓN: Remover solo las clases de animación, NO la clase 'active'
+                slides.forEach((slide) => {
+                    slide.classList.remove('from-right', 'from-left', 'exit-left', 'exit-right');
+                });
+
+                // ✅ Remover la clase 'active' solo del slide anterior
+                previousElement.classList.remove('active');
+
+                // Aplicar animaciones según dirección
+                if (direction === 'right') {
+                    // Avanzar: slide anterior sale a la izquierda, nuevo entra desde la derecha
+                    previousElement.classList.add('exit-left');
+                    newElement.classList.add('active', 'from-right');
+                } else {
+                    // Retroceder: slide anterior sale a la derecha, nuevo entra desde la izquierda
+                    previousElement.classList.add('exit-right');
+                    newElement.classList.add('active', 'from-left');
+                }
+
+                currentSlide = index;
+
+                // Esperar a que termine la animación
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 500);
+            }
+
+            // Siguiente slide
+            function nextSlide() {
+                goToSlide((currentSlide + 1) % totalSlides, 'right');
+            }
+
+            // Slide anterior
+            function prevSlide() {
+                goToSlide((currentSlide - 1 + totalSlides) % totalSlides, 'left');
+            }
+
+            // Full screen al hacer tap
+            function requestFullScreen() {
+                initialInstruction.style.display = 'none';
+                const element = carouselWrapper;
+                if (element.requestFullscreen) {
+                    element.requestFullscreen().catch(() => {
+                        console.log('Fullscreen no disponible');
+                    });
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                }
+                isFullScreen = true;
+            }
+
+            // Tap en el carousel (primer tap activa fullscreen)
+            carouselWrapper.addEventListener('click', (e) => {
+                if (!isFullScreen) {
+                    requestFullScreen();
+                    return;
+                }
+
+                const rect = carouselWrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+
+                if (x < rect.width * 0.25) {
+                    prevSlide();
+                } else if (x > rect.width * 0.75) {
+                    nextSlide();
+                }
+            });
+
+            // Tap zones
+            document.getElementById('tapLeft').addEventListener('click', (e) => {
+                e.stopPropagation();
+                prevSlide();
+            });
+
+            document.getElementById('tapRight').addEventListener('click', (e) => {
+                e.stopPropagation();
+                nextSlide();
+            });
+
+            // Detección de swipe
+            carouselWrapper.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].clientX;
+                touchStartY = e.changedTouches[0].clientY;
+            }, false);
+
+            carouselWrapper.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                
+                const diffX = touchStartX - touchEndX;
+                const diffY = touchStartY - touchEndY;
+
+                // Detectar movimiento horizontal (ignorar vertical)
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        // Swipe left - siguiente
+                        nextSlide();
+                    } else {
+                        // Swipe right - anterior
+                        prevSlide();
+                    }
+                }
+            }, false);
+
+            // Salir de fullscreen
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    isFullScreen = false;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
